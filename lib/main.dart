@@ -7,6 +7,7 @@ import 'package:trip_planner/trip_planner_app.dart';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:trip_planner/models/ModelProvider.dart';
+import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +31,7 @@ Future<void> _configureAmplify() async {
     AmplifyAuthCognito(),
     AmplifyDataStore(modelProvider: ModelProvider.instance),
     AmplifyAPI(),
+    AmplifyStorageS3(),
   ]);
   await Amplify.configure(amplifyconfig);
 }

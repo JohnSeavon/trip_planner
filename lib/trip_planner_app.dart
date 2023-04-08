@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:trip_planner/common/navigation/router/routes.dart';
 import 'package:trip_planner/common/utils/colors.dart' as constants;
 import 'package:trip_planner/features/trip/ui/trip_list/trips_list_page.dart';
+import 'package:trip_planner/features/trip/ui/trip_page/trip_page.dart';
 
 class TripPlannerApp extends StatelessWidget {
   const TripPlannerApp({
@@ -30,7 +31,15 @@ class TripPlannerApp extends StatelessWidget {
                     ),
                   ),
                 ),
-        )
+        ),
+        GoRoute(
+          path: '/trip/:id',
+          name: AppRoute.trip.name,
+          builder: (context, state) {
+            final tripId = state.params['id']!;
+            return TripPage(tripId: tripId);
+          },
+        ),
       ],
       errorBuilder: (context, state) => Scaffold(
         body: Center(

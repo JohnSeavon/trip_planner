@@ -14,6 +14,12 @@
     "categories": {
       "auth": {
         "tripplannere51973b4": {}
+      },
+      "api": {
+        "tripplanner": {}
+      },
+      "storage": {
+        "s302edf19f": {}
       }
     }
   }
