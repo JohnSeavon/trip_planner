@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:trip_planner/common/navigation/router/routes.dart';
 import 'package:trip_planner/models/Trip.dart';
 import 'package:trip_planner/common/utils/colors.dart' as constants;
 
@@ -22,10 +24,10 @@ class TripCard extends StatelessWidget {
       splashColor: constants.primarySwatch[900],
       borderRadius: BorderRadius.circular(15),
       onTap: () {
-        // context.goNamed(
-        //   AppRoute.trip.name,
-        //   params: {'id': trip.id},
-        // );
+        context.goNamed(
+          AppRoute.trip.name,
+          params: {'id': trip.id},
+        );
       },
       child: Card(
         clipBehavior: Clip.antiAlias,
@@ -60,7 +62,7 @@ class TripCard extends StatelessWidget {
                                   width: double.maxFinite,
                                   height: 500,
                                   alignment: Alignment.center,
-                                  fit: BoxFit.fill,
+                                  fit: BoxFit.cover,
                                 )
                               ],
                             )

@@ -93,8 +93,8 @@ class SelectedTripCard extends ConsumerWidget {
                         imageUrl: trip.tripImageUrl!,
                         width: double.maxFinite,
                         height: 500,
-                        alignment: Alignment.topCenter,
-                        fit: BoxFit.fill,
+                        alignment: Alignment.center,
+                        fit: BoxFit.cover,
                       )
                     ],
                   )
