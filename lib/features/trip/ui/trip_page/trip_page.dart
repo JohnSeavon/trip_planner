@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:trip_planner/common/navigation/router/routes.dart';
+import 'package:trip_planner/common/ui/the_navigation_drawer.dart';
 import 'package:trip_planner/common/utils/colors.dart' as constants;
 import 'package:trip_planner/features/trip/data/trips_repository.dart';
 import 'package:trip_planner/features/trip/ui/trip_page/selected_trip_card.dart';
@@ -31,10 +32,11 @@ class TripPage extends ConsumerWidget {
         ],
         backgroundColor: const Color(constants.primaryColorDark),
       ),
+      drawer: const TheNavigationDrawer(),
       body: tripValue.when(
         data: (trip) => trip == null
             ? const Center(
-                child: Text('Trip bot found'),
+                child: Text('Trip not found'),
               )
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
