@@ -6,7 +6,7 @@ import 'package:trip_planner/common/utils/colors.dart' as constants;
 import 'package:trip_planner/features/trip/data/trips_repository.dart';
 import 'package:trip_planner/features/trip/ui/trip_page/selected_trip_card.dart';
 
-class TripPage extends StatelessWidget {
+class TripPage extends ConsumerWidget {
   const TripPage({
     super.key,
     required this.tripId,
@@ -15,7 +15,8 @@ class TripPage extends StatelessWidget {
   final String tripId;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final tripValue = ref.watch(tripProvider(tripId));
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -30,55 +31,58 @@ class TripPage extends StatelessWidget {
         ],
         backgroundColor: const Color(constants.primaryColorDark),
       ),
-      body: Consumer(
-        builder: (BuildContext context, WidgetRef ref, Widget? child) {
-          final tripValue = ref.watch(tripProvider(tripId));
-          return tripValue.when(
-            data: (trip) => trip == null
-                ? const Center(
-                    child: Text('Trip bot found'),
-                  )
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      const SizedBox(height: 8),
-                      SelectedTripCard(trip: trip),
-                      const SizedBox(height: 20),
-                      const Divider(
-                        height: 20,
-                        thickness: 5,
-                        indent: 20,
-                        endIndent: 20,
-                      ),
-                      const Text(
-                        'Your Activities',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                    ],
+      body: tripValue.when(
+        data: (trip) => trip == null
+            ? const Center(
+                child: Text('Trip bot found'),
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(
+                    height: 8,
                   ),
-            error: (error, stackTrace) {
-              return Center(
-                child: Column(
-                  children: [
-                    Text(error.toString()),
-                    TextButton(
-                      onPressed: () async => ref.refresh(tripProvider(tripId)),
-                      child: const Text('Try again'),
+                  SelectedTripCard(trip: trip),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Divider(
+                    height: 20,
+                    thickness: 5,
+                    indent: 20,
+                    endIndent: 20,
+                  ),
+                  const Text(
+                    'Your Activities',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
-                  ],
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                ],
+              ),
+        error: (error, stackTrace) {
+          return Center(
+            child: Column(
+              children: [
+                Text(error.toString()),
+                TextButton(
+                  onPressed: () async {
+                    ref.refresh(tripProvider(tripId));
+                  },
+                  child: const Text('Try again'),
                 ),
-              );
-            },
-            loading: () {
-              return const Center(
-                child: CircularProgressIndicator.adaptive(),
-              );
-            },
+              ],
+            ),
+          );
+        },
+        loading: () {
+          return const Center(
+            child: CircularProgressIndicator.adaptive(),
           );
         },
       ),

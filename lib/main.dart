@@ -11,19 +11,17 @@ import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  bool isAmplifySuccessfullyConfigured = false;
   try {
     await _configureAmplify();
-    isAmplifySuccessfullyConfigured = true;
   } on AmplifyAlreadyConfiguredException {
     debugPrint('Amplify configuration failed.');
   }
 
-  runApp(ProviderScope(
-    child: TripPlannerApp(
-      isAmplifySuccessfullyConfigured: isAmplifySuccessfullyConfigured,
+  runApp(
+    const ProviderScope(
+      child: TripPlannerApp(),
     ),
-  ));
+  );
 }
 
 Future<void> _configureAmplify() async {

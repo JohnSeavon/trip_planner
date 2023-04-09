@@ -5,23 +5,21 @@ import 'package:trip_planner/features/trip/data/trips_repository.dart';
 import 'package:trip_planner/features/trip/ui/trip_list/add_trip_bottomsheet.dart';
 import 'package:trip_planner/features/trip/ui/trip_list/trip_card.dart';
 
-class TripsListPage extends HookConsumerWidget {
+class TripsListPage extends ConsumerWidget {
   const TripsListPage({super.key});
 
-  void showAddTripDialog(BuildContext context) async {
-    await showModalBottomSheet<void>(
-      isScrollControlled: true,
-      elevation: 5,
-      context: context,
-      builder: (BuildContext context) {
-        return AddTripBottomSheet();
-      },
-    );
-  }
+  Future<void> showAddTripDialog(BuildContext context) =>
+      showModalBottomSheet<void>(
+        isScrollControlled: true,
+        elevation: 5,
+        context: context,
+        builder: (sheetContext) {
+          return AddTripBottomSheet();
+        },
+      );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Orientation orientation = MediaQuery.of(context).orientation;
     final tripsListValue = ref.watch(tripsListStreamProvider);
     return Scaffold(
       appBar: AppBar(
@@ -44,24 +42,19 @@ class TripsListPage extends HookConsumerWidget {
             ? const Center(
                 child: Text('No trips'),
               )
-            : Column(
-                children: [
-                  Flexible(
-                    child: GridView.count(
-                      crossAxisCount:
-                          (orientation == Orientation.portrait) ? 2 : 3,
-                      mainAxisSpacing: 4,
-                      crossAxisSpacing: 4,
-                      padding: const EdgeInsets.all(4),
-                      childAspectRatio:
-                          (orientation == Orientation.portrait) ? 0.9 : 1.4,
-                      children: trips.map((tripData) {
-                        return TripCard(trip: tripData!);
-                      }).toList(),
-                    ),
-                  ),
-                ],
-              ),
+            : OrientationBuilder(builder: (context, orientation) {
+                return GridView.count(
+                  crossAxisCount: (orientation == Orientation.portrait) ? 2 : 3,
+                  mainAxisSpacing: 4,
+                  crossAxisSpacing: 4,
+                  padding: const EdgeInsets.all(4),
+                  childAspectRatio:
+                      (orientation == Orientation.portrait) ? 0.9 : 1.4,
+                  children: trips.map((tripData) {
+                    return TripCard(trip: tripData!);
+                  }).toList(growable: false),
+                );
+              }),
         error: (error, stackTrace) => const Center(
           child: Text('Unexpected error'),
         ),
